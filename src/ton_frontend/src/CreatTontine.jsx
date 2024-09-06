@@ -1,184 +1,46 @@
-import React, { useState } from 'react';
-import '../public/bootstrap/css/bootstrap.min.css'; // Assurez-vous que le chemin est correct
+import { useState } from 'react';
 
-const CreatTontine = () => {
-  const [nom, setNom] = useState('');
-  const [description, setDescription] = useState('');
-  const [nature, setNature] = useState('Epargne');
-  const [frequence, setFrequence] = useState('');
-  const [montant, setMontant] = useState('');
-  const [penal, setPenal] = useState('');
-  const [maxPart, setMaxPart] = useState('');
-  const [dateDebut, setDateDebut] = useState('');
-  const [dateFin, setDateFin] = useState('');
-  const [createur, setCreateur] = useState('');
+function CreerTontine({ onCreateTontine }) {
+  const [formData, setFormData] = useState({
+    nom: '',
+    description: '',
+    nature: 1,
+    frequence: 1,
+    montant: 0.0,
+    penal: 0.0,
+    maxParticipants: 5,
+    date: Date.now(),
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  function handleChange(event) {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  }
 
-    const tontineData = {
-      nom,
-      description,
-      nature,
-      frequence: parseInt(frequence, 10),
-      montant: parseFloat(montant),
-      penal: parseFloat(penal),
-      nombreParticipantsMax: parseInt(maxPart, 10),
-      createur,
-      date: new Date(dateDebut).getTime() // Convertir en timestamp
-    };
-
-    try {
-      // Envoyer les données au backend ou à l'API pour créer la tontine
-      const response = await axios.post('/api/creerTontine', tontineData);
-      if (response.status === 200) {
-        alert('Tontine créée avec succès!');
-      }
-    } catch (error) {
-      console.error('Erreur lors de la création de la tontine:', error);
-      alert('Erreur lors de la création de la tontine');
-    }
-  };
+  // function handleSubmit(event) {
+  //   event.preventDefault();
+  //   onCreateTontine(formData.nom, formData.description, formData.nature, formData.frequence, parseFloat(formData.montant), parseFloat(formData.penal), parseInt(formData.maxParticipants), "CreateurId", formData.date);
+  // }
+  
 
   return (
-    <div className="container mt-5">
-      <h2>Créer une Tontine</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="formTontineName">Nom de la Tontine</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formTontineName"
-            placeholder="Entrez le nom de la tontine"
-            value={nom}
-            onChange={(e) => setNom(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="formTontineDescription">Description</label>
-          <textarea
-            className="form-control"
-            id="formTontineDescription"
-            rows="3"
-            placeholder="Entrez une description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="formTontineNature">Nature</label>
-          <select
-            className="form-control"
-            id="formTontineNature"
-            value={nature}
-            onChange={(e) => setNature(e.target.value)}
-            required
-          >
-            <option value="Epargne">Epargne</option>
-            <option value="Cotisation">Cotisation</option>
-            <option value="Investissement">Investissement</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="formTontineFrequence">Fréquence</label>
-          <input
-            type="number"
-            className="form-control"
-            id="formTontineFrequence"
-            placeholder="Entrez la fréquence"
-            value={frequence}
-            onChange={(e) => setFrequence(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="formTontineMontant">Montant</label>
-          <input
-            type="number"
-            step="0.01"
-            className="form-control"
-            id="formTontineMontant"
-            placeholder="Entrez le montant"
-            value={montant}
-            onChange={(e) => setMontant(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="formTontinePenal">Pénalités</label>
-          <input
-            type="number"
-            step="0.01"
-            className="form-control"
-            id="formTontinePenal"
-            placeholder="Entrez le montant des pénalités"
-            value={penal}
-            onChange={(e) => setPenal(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="formTontineMaxPart">Nombre Maximum de Participants</label>
-          <input
-            type="number"
-            className="form-control"
-            id="formTontineMaxPart"
-            placeholder="Entrez le nombre maximum de participants"
-            value={maxPart}
-            onChange={(e) => setMaxPart(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="formTontineDateDebut">Date de Début</label>
-          <input
-            type="date"
-            className="form-control"
-            id="formTontineDateDebut"
-            value={dateDebut}
-            onChange={(e) => setDateDebut(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="formTontineDateFin">Date de Fin</label>
-          <input
-            type="date"
-            className="form-control"
-            id="formTontineDateFin"
-            value={dateFin}
-            onChange={(e) => setDateFin(e.target.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="formTontineCreateur">Créateur</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formTontineCreateur"
-            placeholder="Entrez l'identifiant du créateur"
-            value={createur}
-            onChange={(e) => setCreateur(e.target.value)}
-            required
-          />
-        </div>
-
-        <button type="submit" className="btn btn-primary">Créer la Tontine</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input type="text" name="nom" value={formData.nom} onChange={handleChange} placeholder="Nom de la tontine" required />
+      <input type="text" name="description" value={formData.description} onChange={handleChange} placeholder="Description" required />
+      <select name="nature" value={formData.nature} onChange={handleChange}>
+        <option value="0">Epargne</option>
+        <option value="1">Cotisation</option>
+        <option value="2">Investissement</option>
+      </select>
+      <input type="number" name="frequence" value={formData.frequence} onChange={handleChange} placeholder="Fréquence (en semaines)" required />
+      <input type="number" name="montant" value={formData.montant} onChange={handleChange} placeholder="Montant" required />
+      <input type="number" name="penal" value={formData.penal} onChange={handleChange} placeholder="Pénalité" required />
+      <input type="number" name="maxParticipants" value={formData.maxParticipants} onChange={handleChange} placeholder="Nombre max. de participants" required />
+      <button type="submit">Créer Tontine</button>
+    </form>
   );
-};
+}
 
-export default CreatTontine;
+export default CreerTontine;
