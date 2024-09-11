@@ -1,4 +1,5 @@
 {
+  
   "canisters": {
     "internet_identity": {
       "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
@@ -15,6 +16,32 @@
       "main": "src/ton_backend/main.mo",
       "type": "motoko"
     },
+    "icrc1_ledger_canister": {
+      "type": "custom",
+      "candid": "https://raw.githubusercontent.com/dfinity/ic/d87954601e4b22972899e9957e800406a0a6b929/rs/rosetta-api/icrc1/ledger/ledger.did",
+      "wasm": "https://download.dfinity.systems/ic/d87954601e4b22972899e9957e800406a0a6b929/canisters/ic-icrc1-ledger.wasm.gz"
+    
+  },
+    "ton_transact": {
+      "main": "src/ton_transact/transact.mo",
+      "type": "motoko",
+      "dependencies": ["icrc1_ledger_canister"]
+    },
+    "icp_ledger_canister": {
+            "type": "custom",
+            "candid": "https://raw.githubusercontent.com/dfinity/ic/d87954601e4b22972899e9957e800406a0a6b929/rs/rosetta-api/icp_ledger/ledger.did",
+            "metadata": [
+            {
+              "name": "candid:service"
+            }
+          ],
+            "wasm": "https://download.dfinity.systems/ic/d87954601e4b22972899e9957e800406a0a6b929/canisters/ledger-canister.wasm.gz",
+            "remote": {
+                "id": {
+                    "ic": "ryjl3-tyaaa-aaaaa-aaaba-cai"
+                }
+            }
+        },
     "ton_frontend": {
       "dependencies": [
         "ton_backend"
@@ -32,6 +59,9 @@
       "packtool": ""
     }
   },
+  
+  
   "output_env_file": ".env",
   "version": 1
+  
 }
