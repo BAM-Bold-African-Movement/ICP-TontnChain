@@ -115,7 +115,7 @@ actor {
                 };
                 tontines.put(nouvelleTontine.id, nouvelleTontine);
             };
-            case (_) { /* Gérer l'erreur pour utilisateur non trouvé */ }
+            case (_) { }
         }
     };
 
@@ -163,5 +163,4 @@ actor {
         }
     };
 
-    // Ajoute les autres fonctions ici, en veillant à mettre à jour `collecteEnCours` et `dernierCollecteur` dans chaque mise à jour de `Tontine`.
 }
